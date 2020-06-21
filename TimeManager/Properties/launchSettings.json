@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TimeManager": {
+      "commandName": "Project",
+      "commandLineArgs": "init"
+    }
+  }
+}

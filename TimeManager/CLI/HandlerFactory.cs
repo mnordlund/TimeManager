@@ -11,5 +11,12 @@ namespace TimeManager.CLI
 
             return contractHandler;
         }
+
+        public static IDayHandler GetDayHandler()
+        {
+            var dayHandler = new DayHandler();
+
+            return dayHandler;
+        }
     }
 }

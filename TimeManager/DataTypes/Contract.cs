@@ -8,6 +8,7 @@ namespace TimeManager.DataTypes
     /// </summary>
     class Contract
     {
+        public Guid Guid { get; set; }
         // Dates
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }

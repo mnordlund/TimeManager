@@ -1,34 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using TimeManager.DataTypes;
 using TimeManager.Exceptions;
 using TimeManager.Interfaces;
+using TimeManager.Stores;
 
 namespace TimeManager.Handlers
 {
     class ContractHandler : IContractHandler
     {
-        private Stack<Contract> Contracts { get; set; }
-        private IContractState ContractState { get; set; }
+        private IContractStore ContractStore { get; set; }
 
-        public ContractHandler(IContractState contractState)
+        public Contract CurrentContract { get => ContractStore.GetCurrentContract(); }
+
+        public ContractHandler(IContractStore contractStore)
         {
-            ContractState = contractState;
+            ContractStore = contractStore;
 
-            // TODO read contract list from database
-            Contracts = new Stack<Contract>();
         }
 
         public ContractHandler()
         {
-            // TODO Get state from database
-            ContractState = new CurrentState();
+            ContractStore = StoreFactory.CreateContractStore();
         }
 
         public Contract CreateNewContract()
         {
-            var currentContract = ContractState.CurrentContract;
+            var currentContract = ContractStore.GetCurrentContract();
 
             if (currentContract != null)
             {
@@ -53,16 +50,13 @@ namespace TimeManager.Handlers
 
         public void AddContract(Contract contract)
         {
-            ContractState.CurrentContract.EndDate = contract.StartDate.AddDays(-1);
-            Contracts.Push(contract);
-
-
+            ContractStore.GetCurrentContract().EndDate = contract.StartDate.AddDays(-1);
         }
 
         public void CheckCurrentContract()
         {
             DateTimeOffset now = DateTimeOffset.Now;
-            if (ContractState.CurrentContract.StartDate >= now && ContractState.CurrentContract.EndDate <= now) return;
+            if (ContractState.CurrentContract.StartDate >= now && (ContractState.CurrentContract.EndDate <= now || ContractState.CurrentContract.EndDate == null)) return;
 
             ContractState.CurrentContract = GetContractForDate(now);
         }

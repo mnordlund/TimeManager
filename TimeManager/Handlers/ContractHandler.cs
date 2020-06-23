@@ -39,7 +39,11 @@ namespace TimeManager.Handlers
         public void SetNewCurrentContract(Contract contract)
         {
             var oldContract = ContractStore.GetCurrentContract();
-            oldContract.EndDate = contract.StartDate.Date;
+            if (oldContract != null)
+            {
+                oldContract.EndDate = contract.StartDate.Date;
+                ContractStore.UpdateContract(oldContract);
+            }
 
             ContractStore.StoreContract(contract);
         }

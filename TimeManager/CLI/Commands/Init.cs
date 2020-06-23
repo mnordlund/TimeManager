@@ -49,6 +49,8 @@ You will be prompted with a set of quetions to initialise the new file and set u
                 var contractView = new ContractView(contract);
                 contractView.Show();
             } while (!Question.AskBool("Is this correct?", true));
+
+            contractHandler.SetNewCurrentContract(contract);
         }
     }
 }

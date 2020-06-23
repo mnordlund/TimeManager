@@ -9,8 +9,4 @@
     <Copyright>Martin Nordlund</Copyright>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Stores\" />
-  </ItemGroup>
-
 </Project>

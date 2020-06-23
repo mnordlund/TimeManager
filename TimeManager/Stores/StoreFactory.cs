@@ -7,6 +7,7 @@ namespace TimeManager.Stores
 {
     class StoreFactory
     {
+        private static IContractStore ContractStore { get; set; }
         public static IDayStore CreateDayStore()
         {
             throw new NotImplementedException();
@@ -14,7 +15,12 @@ namespace TimeManager.Stores
 
         public static IContractStore CreateContractStore()
         {
-            throw new NotImplementedException();
+            if (ContractStore == null)
+            {
+                ContractStore = new ContractStore();
+            }
+                
+            return ContractStore;
         }
 
         internal static IVacationStore CreateVacationStore()

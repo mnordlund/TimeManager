@@ -2,10 +2,11 @@
 
 using Microsoft.EntityFrameworkCore;
 using TimeManager.DataTypes;
+using TimeManager.Stores.EF;
 
 namespace TimeManager.Stores
 {
-    class DBContextSqlite: DbContext
+    class DBContextSqlite: DbContext, IDBContext
     {
         private string DbFile { get; set; }
         public DBContextSqlite(string dbFile)

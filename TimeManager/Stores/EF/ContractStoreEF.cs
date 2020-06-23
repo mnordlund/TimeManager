@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using TimeManager.DataTypes;
 using TimeManager.Interfaces;
+using TimeManager.Stores.EF;
 
 namespace TimeManager.Stores
 {
     class ContractStoreEF : IContractStore
     {
-        // TODO store contracts permanently
         private Contract CurrentContract { get; set; }
 
-        private DBContextSqlite DbContext { get; set; }
+        private IDBContext DbContext { get; set; }
 
-        public ContractStoreEF(DBContextSqlite dbContext)
+        public ContractStoreEF(IDBContext dbContext)
         {
             DbContext = dbContext;
         }

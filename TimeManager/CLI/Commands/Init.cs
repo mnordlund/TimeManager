@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TimeManager.CLI.Helpers;
 using TimeManager.CLI.Views;
@@ -13,7 +14,7 @@ namespace TimeManager.CLI.Commands
 
         public string ShortDescription => "Initialises a new save file";
 
-        public string Arguments => "";
+        public string Arguments => "[filename]";
 
         public string LongDescription => @"
 Initialises a new save file if no filename is given it will be asked for.
@@ -24,9 +25,13 @@ You will be prompted with a set of quetions to initialise the new file and set u
 
         public void Run(string[] args)
         {
-
+            var filename = "MyNewFile";
+            if(args.Length >= 1)
+            {
+                filename = args[0];
+            }
             Console.WriteLine("First we need to know the file name for the database");
-            var filename = Question.AskString("Filename", "MyNewFile");
+            filename = Question.AskString("Filename", filename);
             if(File.Exists(filename))
             {
                 if(!Question.AskBool("This file alreay exists do you want to use the data in it?", true))

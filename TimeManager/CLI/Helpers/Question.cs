@@ -39,9 +39,9 @@ namespace TimeManager.CLI.Helpers
             }
         }
 
-        public static DateTimeOffset AskDate(string prompt, string defaultValue = null)
+        public static DateTime AskDate(string prompt, string defaultValue = null)
         {
-            DateTimeOffset? date = null;
+            DateTime? date = null;
             while (date == null)
             {
                 var input = AskString(prompt, defaultValue);
@@ -54,12 +54,12 @@ namespace TimeManager.CLI.Helpers
                     Console.WriteLine("Invalid format, please use a correct date format.");
                 }
             }
-            return (DateTimeOffset)date;
+            return (DateTime)date;
         }
 
-        public static DateTimeOffset? AskNullableDate(string prompt, string defaultValue = null)
+        public static DateTime? AskNullableDate(string prompt, string defaultValue = null)
         {
-            DateTimeOffset? date = null;
+            DateTime? date = null;
             var input = AskString(prompt, defaultValue);
             try
             {

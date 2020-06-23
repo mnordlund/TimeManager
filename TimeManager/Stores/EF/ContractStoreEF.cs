@@ -30,13 +30,23 @@ namespace TimeManager.Stores
             return DbContext.Contracts;
         }
 
-        public Contract GetContract(DateTimeOffset date)
+        public Contract GetContract(DateTime date)
         {
-            throw new NotImplementedException();
+            var contracts = DbContext.Contracts
+                .Where(c => c.StartDate <= date && (c.EndDate == null || c.EndDate >= date))
+                .OrderByDescending(c => c.StartDate);
+
+            if (contracts.Count() == 0) return null;
+
+            return contracts.First();
         }
 
         public Contract GetCurrentContract()
         {
+            if(CurrentContract == null)
+            {
+                CurrentContract = GetContract(DateTime.Today);
+            }
             return CurrentContract;
         }
 
@@ -56,7 +66,8 @@ namespace TimeManager.Stores
 
         public void UpdateContract(Contract contract)
         {
-            throw new NotImplementedException();
+            DbContext.Contracts.Update(contract);
+            DbContext.SaveChanges();
         }
     }
 }

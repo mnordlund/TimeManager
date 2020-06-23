@@ -12,8 +12,8 @@ namespace TimeManager.DataTypes
         [Key]
         public Guid Guid { get; set; }
         // Dates
-        public DateTimeOffset StartDate { get; set; }
-        public DateTimeOffset? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string Employer { get; set; }
         // Hours and salary
         public int HoursPerWeek { get; set; }
@@ -31,7 +31,7 @@ namespace TimeManager.DataTypes
         /// </summary>
         public Contract()
         {
-            StartDate = DateTimeOffset.Now;
+            StartDate = DateTime.Today;
             EndDate = null;
             Employer = "Employer";
             HoursPerWeek = 40;
@@ -47,7 +47,7 @@ namespace TimeManager.DataTypes
         /// </summary>
         public Contract(Contract contract)
         {
-            StartDate = DateTimeOffset.Now;
+            StartDate = DateTime.Today;
             EndDate = null;
             Employer = contract.Employer;
             HoursPerWeek = contract.HoursPerWeek;

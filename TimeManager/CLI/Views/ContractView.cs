@@ -15,11 +15,8 @@ namespace TimeManager.CLI.Views
         {
             var startDate = Contract.StartDate.ToString("yyyy-MM-dd");
             Console.WriteLine($"Start date: {startDate}");
-            var endDate = "-";
-            if (Contract.EndDate != null)
-            {
-                Contract.EndDate?.ToString("yyyy-MM-dd");
-            }
+            var endDate = Contract.EndDate?.ToString("yyyy-MM-dd") ?? "-";
+
             Console.WriteLine($"End date: {endDate}");
 
             Console.WriteLine($"Employer: {Contract.Employer}");
@@ -39,7 +36,7 @@ namespace TimeManager.CLI.Views
             var vacationYearStart = Contract.VacationYearStart.ToString("yyyy-MM-dd");
             Console.WriteLine($"Vacation year start: {vacationYearStart}");
 
-            Console.WriteLine($"Max stroed vacation days: {Contract.MaxStoredVacationDays}");
+            Console.WriteLine($"Max stored vacation days: {Contract.MaxStoredVacationDays}");
         }
     }
 }

@@ -29,6 +29,6 @@ namespace TimeManager.Interfaces
         /// <summary>
         /// Get the contract valid at a specfic date. Return null if no contract was valid at the given date.
         /// </summary>
-        public Contract GetContract(DateTimeOffset date);
+        public Contract GetContract(DateTime date);
     }
 }

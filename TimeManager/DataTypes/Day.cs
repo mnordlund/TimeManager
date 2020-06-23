@@ -16,8 +16,8 @@ namespace TimeManager.DataTypes
         public DateTime Date { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        //public ICollection<TimeSpan> Breaks { get; set; }
-        //public ICollection<TimeSpan> ExtraWork { get; set; }
+        public IEnumerable<DayTimeSpan> Breaks { get; set; }
+        public IEnumerable<DayTimeSpan> ExtraWork { get; set; }
         public DayType DayType { get; set; }
         public string Comment { get; set; }
     }

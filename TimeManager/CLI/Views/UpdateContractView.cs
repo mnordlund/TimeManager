@@ -26,7 +26,6 @@ namespace TimeManager.CLI.Views
 
             Contract.Employer =  Question.AskString("Employer", Contract.Employer);
 
-            Console.WriteLine($"Hours per week: {Contract.HoursPerWeek}");
             Contract.HoursPerWeek = Question.AskInt("Hours on a workweek", Contract.HoursPerWeek);
 
             var workdayLength = Contract.WorkdayLength.ToString(@"hh\:mm");

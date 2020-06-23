@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TimeManager.DataTypes;
 using TimeManager.Exceptions;
 using TimeManager.Interfaces;
@@ -41,19 +42,32 @@ namespace TimeManager.Handlers
             var oldContract = ContractStore.GetCurrentContract();
             if (oldContract != null)
             {
-                oldContract.EndDate = contract.StartDate.Date;
+                oldContract.EndDate = contract.StartDate.Date.AddDays(-1);
                 ContractStore.UpdateContract(oldContract);
             }
-
+            
             ContractStore.StoreContract(contract);
         }
 
-        public Contract GetContractForDate(DateTimeOffset date)
+        public Contract GetContractForDate(DateTime date)
         {
             var contract = ContractStore.GetContract(date);
 
             if (contract == null) throw new NoValidContractException();
 
+            return contract;
+        }
+
+        public IEnumerable<Contract> ListAllContracts()
+        {
+            return ContractStore.GetAllContracts();
+        }
+
+        public Contract GetCurrentContract()
+        {
+            var contract = ContractStore.GetCurrentContract();
+
+            if (contract == null) throw new NoValidContractException();
             return contract;
         }
     }

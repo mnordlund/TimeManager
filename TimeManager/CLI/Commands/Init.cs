@@ -27,6 +27,14 @@ You will be prompted with a set of quetions to initialise the new file and set u
 
             Console.WriteLine("First we need to know the file name for the database");
             var filename = Question.AskString("Filename", "MyNewFile");
+            if(File.Exists(filename))
+            {
+                if(!Question.AskBool("This file alreay exists do you want to use the data in it?", true))
+                {
+                    File.Delete(filename);
+                }
+
+            }
             if (Question.AskBool("Do you want to use this database as default", true))
             {
                 var settingsHandler = HandlerFactory.GetSettingsHandler();
@@ -35,9 +43,10 @@ You will be prompted with a set of quetions to initialise the new file and set u
                 settingsHandler.UpdateSettings(settings);
             }
 
-            Console.WriteLine("Now let's start by creating our first employment contract..");
-
             var contractHandler = HandlerFactory.GetContractHandler();
+
+            // TODO Check if there already is a contract.
+            Console.WriteLine("Now let's start by creating our first employment contract..");
 
             var contract = contractHandler.CreateNewContract();
 

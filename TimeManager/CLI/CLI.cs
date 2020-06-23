@@ -25,8 +25,14 @@ namespace TimeManager.CLI
                     break;
                 }
             }
-
-            command.Run(args[1..]);
+            if (command != null)
+            {
+                command.Run(args[1..]);
+            }
+            else
+            {
+                Console.WriteLine($"Unknown command: '{args[0]}' use 'help' to list commands.");
+            }
         }
         public static void Run(string[] args)
         {

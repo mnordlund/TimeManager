@@ -19,7 +19,6 @@ namespace TimeManager.Stores
             {
                 ContractStore = new ContractStore();
             }
-                
             return ContractStore;
         }
 

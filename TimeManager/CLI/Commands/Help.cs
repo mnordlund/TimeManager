@@ -22,7 +22,7 @@ If a command is given a more comprehensive help text about that command is displ
 
             var executable = Assembly.GetExecutingAssembly().GetName().Name;
 
-            if (args.Length == 0)
+            if (args == null || args.Length == 0)
             {
                 Console.WriteLine($"Usage: {executable} <command> [command arguments]");
                 Console.WriteLine("Commands:");

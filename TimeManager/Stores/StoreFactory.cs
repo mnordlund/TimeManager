@@ -11,5 +11,15 @@ namespace TimeManager.Stores
         {
             throw new NotImplementedException();
         }
+
+        public static IContractStore CreateContractStore()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static IVacationStore CreateVacationStore()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

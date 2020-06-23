@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using TimeManager.DataTypes;
 
 namespace TimeManager.Interfaces
 {
     interface IVacationStore
     {
-        public int RemainingVactionDaysCurrentYear { get; set; }
-        public int StoredVacationDays { get; set; }
-        public int TotalVacationDays { get; }
-        public DateTimeOffset NextVacationYearStart { get; set; }
+        public VacationState GetCurrentVacationState();
+        public VacationState GetVacationStateForYear(int year);
+        public void UpdateVacationState(VacationState newState);
+        public DateTimeOffset GetNextVacationYearStart();
+        public DateTimeOffset SetNextVacationYearStart(DateTimeOffset date);
     }
 }

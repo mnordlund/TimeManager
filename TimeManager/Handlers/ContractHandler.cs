@@ -10,7 +10,6 @@ namespace TimeManager.Handlers
     {
         private IContractStore ContractStore { get; set; }
 
-        public Contract CurrentContract { get => ContractStore.GetCurrentContract(); }
 
         public ContractHandler(IContractStore contractStore)
         {
@@ -29,18 +28,7 @@ namespace TimeManager.Handlers
 
             if (currentContract != null)
             {
-                var contract = new Contract()
-                {
-                    StartDate = DateTimeOffset.Now,
-                    EndDate = null,
-                    Employer = currentContract.Employer,
-                    HoursPerWeek = currentContract.HoursPerWeek,
-                    Salary = currentContract.Salary,
-                    ReportInterval = currentContract.ReportInterval,
-                    VacationDays = currentContract.VacationDays,
-                    WorkdayLength = currentContract.WorkdayLength,
-                    VacationYearStart = currentContract.VacationYearStart,
-                };
+                var contract = new Contract(currentContract);
 
                 return contract;
             }
@@ -48,30 +36,21 @@ namespace TimeManager.Handlers
             return new Contract();
         }
 
-        public void AddContract(Contract contract)
+        public void SetNewCurrentContract(Contract contract)
         {
-            ContractStore.GetCurrentContract().EndDate = contract.StartDate.AddDays(-1);
-        }
+            var oldContract = ContractStore.GetCurrentContract();
+            oldContract.EndDate = contract.StartDate.Date;
 
-        public void CheckCurrentContract()
-        {
-            DateTimeOffset now = DateTimeOffset.Now;
-            if (ContractState.CurrentContract.StartDate >= now && (ContractState.CurrentContract.EndDate <= now || ContractState.CurrentContract.EndDate == null)) return;
-
-            ContractState.CurrentContract = GetContractForDate(now);
+            ContractStore.StoreContract(contract);
         }
 
         public Contract GetContractForDate(DateTimeOffset date)
         {
-            foreach (var contract in Contracts)
-            {
-                if (contract.StartDate >= date && contract.EndDate <= date)
-                {
-                    return contract;
-                }
-            }
+            var contract = ContractStore.GetContract(date);
 
-            throw new NoValidContractException();
+            if (contract == null) throw new NoValidContractException();
+
+            return contract;
         }
     }
 }

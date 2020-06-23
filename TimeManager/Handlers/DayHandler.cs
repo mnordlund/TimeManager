@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TimeManager.DataTypes;
+using TimeManager.Exceptions;
 using TimeManager.Interfaces;
 using TimeManager.Stores;
 
@@ -9,15 +10,21 @@ namespace TimeManager.Handlers
     class DayHandler : IDayHandler
     {
         private IDayStore DayStore { get; set; }
+        private IVacationStore VacationStore { get; set; }
+        private IContractStore ContractStore { get; set; }
 
-        public DayHandler(IDayStore dayStore)
+        public DayHandler(IDayStore dayStore, IVacationStore vacationStore, IContractStore contractStore)
         {
             DayStore = dayStore;
+            VacationStore = vacationStore;
+            ContractStore = contractStore;
         }
 
         public DayHandler()
         {
             DayStore = StoreFactory.CreateDayStore();
+            VacationStore = StoreFactory.CreateVacationStore();
+            ContractStore = StoreFactory.CreateContractStore();
         }
         public Day CreateNewWorkday(DateTime date)
         {
@@ -94,43 +101,52 @@ namespace TimeManager.Handlers
 
         private void UseVacationDay()
         {
-            if (VacationState.TotalVacationDays <= 0)
+            var vacationState = VacationStore.GetCurrentVacationState();
+            if (vacationState.TotalVacationDays <= 0)
             {
                 throw new VacationDaysExceededException();
             }
 
-            if (VacationState.RemainingVactionDaysCurrentYear >= 1)
+            if (vacationState.RemainingVactionDays >= 1)
             {
-                VacationState.RemainingVactionDaysCurrentYear--;
+                vacationState.RemainingVactionDays--;
             }
             else
             {
-                VacationState.StoredVacationDays--;
+                vacationState.StoredVacationDays--;
             }
+
+            VacationStore.UpdateVacationState(vacationState);
         }
         private void UnuseVacationDay()
         {
-            IVacationState VacationState;
-            Contract contract;
-            if (VacationState.RemainingVactionDaysCurrentYear >= contract.VacationDays)
+            var vacationState = VacationStore.GetCurrentVacationState();
+            var contract = ContractStore.GetCurrentContract();
+            if (vacationState.RemainingVactionDays >= contract.VacationDays)
             {
-                VacationState.StoredVacationDays++;
+                vacationState.StoredVacationDays++;
             }
             else
             {
-                VacationState.RemainingVactionDaysCurrentYear++;
+                vacationState.RemainingVactionDays++;
             }
+
+            VacationStore.UpdateVacationState(vacationState);
         }
 
-        public void CheckForNewVacationYear(Contract contract)
+        public void CheckForNewVacationYear()
         {
-            if (DateTimeOffset.Now < VacationState.NextVacationYearStart) return;
+            var contract = ContractStore.GetCurrentContract();
+            var vacationState = VacationStore.GetCurrentVacationState();
+            if (DateTimeOffset.Now < VacationStore.GetNextVacationYearStart()) return;
 
-            VacationState.NextVacationYearStart = contract.VacationYearStart.AddYears((DateTimeOffset.Now.Year - contract.VacationYearStart.Year) + 1);
+            VacationStore.SetNextVacationYearStart(contract.VacationYearStart.AddYears((DateTimeOffset.Now.Year - contract.VacationYearStart.Year) + 1));
 
-            VacationState.StoredVacationDays = Math.Max(VacationState.StoredVacationDays + VacationState.RemainingVactionDaysCurrentYear, contract.MaxStoredVacationDays);
+            vacationState.StoredVacationDays = Math.Max(vacationState.StoredVacationDays + vacationState.RemainingVactionDays, contract.MaxStoredVacationDays);
 
-            VacationState.RemainingVactionDaysCurrentYear = contract.VacationDays;
+            vacationState.RemainingVactionDays = contract.VacationDays;
+
+            VacationStore.UpdateVacationState(vacationState);
         }
     }
 }

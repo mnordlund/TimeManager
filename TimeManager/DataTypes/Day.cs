@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TimeManager.DataTypes
 {
@@ -11,11 +12,12 @@ namespace TimeManager.DataTypes
     }
     class Day
     {
+        [Key]
         public DateTime Date { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        public IEnumerable<TimeSpan> Breaks { get; set; }
-        public IEnumerable<TimeSpan> ExtraWork { get; set; }
+        //public ICollection<TimeSpan> Breaks { get; set; }
+        //public ICollection<TimeSpan> ExtraWork { get; set; }
         public DayType DayType { get; set; }
         public string Comment { get; set; }
     }

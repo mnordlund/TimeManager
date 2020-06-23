@@ -2,7 +2,7 @@
   "profiles": {
     "TimeManager": {
       "commandName": "Project",
-      "commandLineArgs": "help"
+      "commandLineArgs": "init"
     }
   }
 }

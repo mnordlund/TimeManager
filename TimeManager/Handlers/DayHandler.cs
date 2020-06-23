@@ -22,17 +22,17 @@ namespace TimeManager.Handlers
 
         public DayHandler()
         {
-            DayStore = StoreFactory.CreateDayStore();
-            VacationStore = StoreFactory.CreateVacationStore();
-            ContractStore = StoreFactory.CreateContractStore();
+            DayStore = StoreFactoryProducer.GetStoreFactory().CreateDayStore();
+            VacationStore = StoreFactoryProducer.GetStoreFactory().CreateVacationStore();
+            ContractStore = StoreFactoryProducer.GetStoreFactory().CreateContractStore();
         }
         public Day CreateNewWorkday(DateTime date)
         {
             var workDay = new Day()
             {
                 Date = date,
-                Breaks = new List<TimeSpan>(),
-                ExtraWork = new List<TimeSpan>(),
+                //Breaks = new List<TimeSpan>(),
+                //ExtraWork = new List<TimeSpan>(),
                 DayType = DayType.WorkDay
             };
             return workDay;
@@ -101,6 +101,7 @@ namespace TimeManager.Handlers
 
         private void UseVacationDay()
         {
+            // TODO Make sure the vacation day is in the current vacation year.
             var vacationState = VacationStore.GetCurrentVacationState();
             if (vacationState.TotalVacationDays <= 0)
             {
@@ -137,6 +138,8 @@ namespace TimeManager.Handlers
         public void CheckForNewVacationYear()
         {
             var contract = ContractStore.GetCurrentContract();
+            if (contract == null) throw new NoValidContractException();
+
             var vacationState = VacationStore.GetCurrentVacationState();
             if (DateTimeOffset.Now < VacationStore.GetNextVacationYearStart()) return;
 

@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TimeManager.DataTypes
 {
@@ -8,6 +9,7 @@ namespace TimeManager.DataTypes
     /// </summary>
     class Contract
     {
+        [Key]
         public Guid Guid { get; set; }
         // Dates
         public DateTimeOffset StartDate { get; set; }

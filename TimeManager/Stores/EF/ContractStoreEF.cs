@@ -1,30 +1,33 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TimeManager.DataTypes;
 using TimeManager.Interfaces;
 
 namespace TimeManager.Stores
 {
-    class ContractStore : IContractStore
+    class ContractStoreEF : IContractStore
     {
         // TODO store contracts permanently
         private Contract CurrentContract { get; set; }
-        private Stack<Contract> Contracts { get; set; }
 
-        public ContractStore()
+        private DBContextSqlite DbContext { get; set; }
+
+        public ContractStoreEF(DBContextSqlite dbContext)
         {
-            // TODO Setup database context.
-            Contracts = new Stack<Contract>();
+            DbContext = dbContext;
         }
 
         public void DeleteContract(Contract contract)
         {
-            throw new NotImplementedException();
+            DbContext.Contracts.Remove(contract);
+            DbContext.SaveChanges();
         }
 
         public IEnumerable<Contract> GetAllContracts()
         {
-            throw new NotImplementedException();
+            return DbContext.Contracts;
         }
 
         public Contract GetContract(DateTimeOffset date)
@@ -47,7 +50,8 @@ namespace TimeManager.Stores
                 CurrentContract = contract;
             }
 
-            Contracts.Push(contract);
+            DbContext.Contracts.Add(contract);
+            DbContext.SaveChanges();
         }
 
         public void UpdateContract(Contract contract)

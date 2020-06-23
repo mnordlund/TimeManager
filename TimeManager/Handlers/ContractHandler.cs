@@ -19,7 +19,7 @@ namespace TimeManager.Handlers
 
         public ContractHandler()
         {
-            ContractStore = StoreFactory.CreateContractStore();
+            ContractStore = StoreFactoryProducer.GetStoreFactory().CreateContractStore();
         }
 
         public Contract CreateNewContract()

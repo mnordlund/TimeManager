@@ -18,5 +18,12 @@ namespace TimeManager.CLI
 
             return dayHandler;
         }
+
+        public static ISettingsHandler GetSettingsHandler()
+        {
+            var settingsHandler = new SettingsHandler();
+
+            return settingsHandler;
+        }
     }
 }

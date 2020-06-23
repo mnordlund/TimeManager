@@ -13,7 +13,7 @@ namespace TimeManager.CLI.Commands
 
         public string ShortDescription => "Initialises a new save file";
 
-        public string Arguments => "[filename]";
+        public string Arguments => "";
 
         public string LongDescription => @"
 Initialises a new save file if no filename is given it will be asked for.
@@ -24,15 +24,15 @@ You will be prompted with a set of quetions to initialise the new file and set u
 
         public void Run(string[] args)
         {
-            string filename;
-            if (args.Length == 0)
+
+            Console.WriteLine("First we need to know the file name for the database");
+            var filename = Question.AskString("Filename", "MyNewFile");
+            if (Question.AskBool("Do you want to use this database as default", true))
             {
-                Console.WriteLine("First we need to know the file name for the save");
-                filename = Question.AskString("Filename", "MyNewFile");
-            }
-            else
-            {
-                filename = args[0];
+                var settingsHandler = HandlerFactory.GetSettingsHandler();
+                var settings = settingsHandler.GetSettings();
+                settings.DatabaseFile = filename;
+                settingsHandler.UpdateSettings(settings);
             }
 
             Console.WriteLine("Now let's start by creating our first employment contract..");

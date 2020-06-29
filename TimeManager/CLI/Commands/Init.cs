@@ -40,7 +40,7 @@ You will be prompted with a set of quetions to initialise the new file and set u
                 }
 
             }
-            if (Question.AskBool("Do you want to use this database as default", true))
+            if (Question.AskBool("Do you want to use this database as your default database", true))
             {
                 var settingsHandler = HandlerFactory.GetSettingsHandler();
                 var settings = settingsHandler.GetSettings();
